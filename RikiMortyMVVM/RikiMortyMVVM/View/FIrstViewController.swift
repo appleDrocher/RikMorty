@@ -1,9 +1,10 @@
 import Constraints
 import UIKit
 
-final class FIrstViewController: UIViewController {
+final class FirstViewController: UIViewController {
+  
+    private lazy var forecastCollection = ForecastCollection()
     private var content = UIView()
-    private lazy var collection = ForecastCollection()
     private let heroes: UILabel = {
         let label = UILabel()
         label.frame = CGRect(x: 0, y: 0, width: 187, height: 38)
@@ -21,13 +22,15 @@ final class FIrstViewController: UIViewController {
         setup()
         layout()
         
+
     }
     
     private func setup() {
         
         view.addSubview(content)
         content.addSubview(heroes)
-        content.addSubview(collection)
+        content.addSubview(forecastCollection)
+
     }
     
     
@@ -43,7 +46,7 @@ final class FIrstViewController: UIViewController {
             .height(38)
             .activate()
        
-        collection.layout
+        forecastCollection.layout
             .leading()
             .trailing()
             .top(20)

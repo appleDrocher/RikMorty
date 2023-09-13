@@ -10,7 +10,7 @@ class SplashViewController: UIViewController {
         
         tabBarController.tabBar.isTranslucent = false
 
-        let vc1 = FIrstViewController()
+        let vc1 = FirstViewController()
         let vc2 = SecondViewController()
         let vc3 = SecondViewController()
        
