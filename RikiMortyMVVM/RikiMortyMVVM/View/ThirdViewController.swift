@@ -8,7 +8,7 @@ class ThirdViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .blue
         navigationController?.navigationBar.prefersLargeTitles = true
-        title = "Избранное"
+        title = "артем лох"
        
     }
     
