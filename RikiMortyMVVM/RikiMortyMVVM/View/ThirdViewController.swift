@@ -1,13 +1,17 @@
+
+
 import UIKit
 
-class SecondViewController: UIViewController {
+class ThirdViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        view.backgroundColor = .blue
         navigationController?.navigationBar.prefersLargeTitles = true
-        title = "Информация"
-        view.backgroundColor = .systemYellow
+        title = "Избранное"
+       
     }
+    
 
+   
 }

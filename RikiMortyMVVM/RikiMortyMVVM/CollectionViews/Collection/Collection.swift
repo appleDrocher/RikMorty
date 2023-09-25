@@ -2,24 +2,33 @@ import UIKit
 
 final class ForecastCollection: UICollectionView {
     
-   
+    public weak var controller : UIViewController?
     
+    private var hero: Characters?
     
     
     public init() {
         let layout = UICollectionViewFlowLayout()
-           let collectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: layout)
         super.init(frame: .zero, collectionViewLayout: layout)
         setup()
-    }
-    
+       
+}
+      
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
     
-    
-    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let newViewController = SecondViewController()
+        controller?.navigationController?.pushViewController(newViewController, animated: true)
+        
+    }
+   
+    public func set(hero: Characters?) {
+        self.hero = hero
+        reloadData()
+    }
     
     
     
@@ -29,19 +38,19 @@ final class ForecastCollection: UICollectionView {
         register(ForecastCell.self, forCellWithReuseIdentifier: ForecastCell.identifier)
         
        
-        showsHorizontalScrollIndicator = false
-        contentInset = .init(top: 0, left: 20, bottom: 0, right: 20)
+        
+        contentInset = .init(top: 0, left: 0, bottom: 0, right: 0)
         decelerationRate = .fast
     }
 }
 
 extension ForecastCollection: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return .init(width: collectionView.frame.width - 50, height: 100)
+        return .init(width:  364, height: 70)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        return 20
+        return 8
     }
 }
 
@@ -52,18 +61,20 @@ extension ForecastCollection: UICollectionViewDataSource {
     
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 19
+        return hero?.results.count ?? 8
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ForecastCell.identifier, for: indexPath) as? ForecastCell else {
             return UICollectionViewCell()
-        
-            fatalError("Не удалось извлечь ячейку YourCollectionViewCell")
+            
         }
-        
-        // Настройте ячейку данными или выполните любую необходимую настройку
-        
+        if let chatac = hero?.results[indexPath.item] { cell.configure(with: chatac) }
+      
         return cell
     }
+  
+    
+    
+    
 }

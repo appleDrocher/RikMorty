@@ -9,10 +9,13 @@ class SplashViewController: UIViewController {
         let tabBarController = UITabBarController()
         
         tabBarController.tabBar.isTranslucent = false
-
+        tabBarController.tabBar.layer.borderWidth = 1
+        tabBarController.tabBar.layer.borderColor = UIColor(red: 0.921, green: 0.921, blue: 0.921, alpha: 1).cgColor
+   
+              
         let vc1 = FirstViewController()
         let vc2 = SecondViewController()
-        let vc3 = SecondViewController()
+        let vc3 = ThirdViewController()
        
         let nav1 = UINavigationController(rootViewController: vc1)
         let nav2 = UINavigationController(rootViewController: vc2)
@@ -36,8 +39,6 @@ class SplashViewController: UIViewController {
             items[i].selectedImage = UIImage(named: selectedImages[i])
         }
 
-
-        
         tabBarController.modalPresentationStyle = .fullScreen
         present(tabBarController, animated: true)
         
