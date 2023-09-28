@@ -1,6 +1,6 @@
 import UIKit
 
-class SecondViewController: UIViewController {
+final class StoryViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()

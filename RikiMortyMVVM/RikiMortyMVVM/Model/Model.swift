@@ -2,7 +2,7 @@
 import Foundation
 
 // MARK: - Welcome
-struct Characters: Codable {
+struct Characters: Decodable {
     let info: Info
     let results: [Result]
 }
@@ -10,29 +10,30 @@ struct Characters: Codable {
 // MARK: - Info
 
 extension Characters {
+  
     
-    struct Info: Codable {
+    struct Info: Decodable {
         let count, pages: Int
         let next: String
         
     }
     
     // MARK: - Result
-    struct Result: Codable {
+    struct Result: Decodable {
         let id: Int
         let name: String
         let status: Status
         let species: Species
         let type: String
         let gender: Gender
-        let origin, location: Location
+        let origin: Location
+        let location: Location
         let image: String
         let episode: [String]
         let url: String
         let created: String
         
-        
-        var url5: URL? {
+        var normalUrl: URL? {
             let normal =  image
             return URL(string: normal)
         }
@@ -40,7 +41,7 @@ extension Characters {
         
     }
     
-    enum Gender: String, Codable {
+    enum Gender: String, Decodable {
         case female = "Female"
         case male = "Male"
         case unknown = "unknown"
@@ -48,18 +49,18 @@ extension Characters {
     
     // MARK: - Location
     
-    enum Species: String, Codable {
+    enum Species: String, Decodable {
         case alien = "Alien"
         case human = "Human"
     }
     
-    enum Status: String, Codable {
+    enum Status: String, Decodable {
         case alive = "Alive"
         case dead = "Dead"
         case unknown = "unknown"
     }
   
-    struct Location: Codable {
+    struct Location: Decodable {
         let name: String
         let url: String
     }

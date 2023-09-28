@@ -13,7 +13,8 @@ enum Request {
     private var parameters: [URLQueryItem] {
         switch self {
         case .characters:
-            return [ .init(name: "next", value: "https://rickandmortyapi.com/api/character/?page=2")
+            return [
+                .init(name: "next", value: "https://rickandmortyapi.com/api/character/?page=2")
             ]
             
         }

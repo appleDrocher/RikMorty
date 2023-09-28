@@ -1,6 +1,6 @@
 import UIKit
 
-final class ForecastCollection: UICollectionView {
+final class CharactersCollection: UICollectionView {
     
     public weak var controller : UIViewController?
     
@@ -20,7 +20,7 @@ final class ForecastCollection: UICollectionView {
     
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let newViewController = SecondViewController()
+        let newViewController = StoryViewController()
         controller?.navigationController?.pushViewController(newViewController, animated: true)
         
     }
@@ -35,7 +35,7 @@ final class ForecastCollection: UICollectionView {
     private func setup() {
         dataSource = self
         delegate = self
-        register(ForecastCell.self, forCellWithReuseIdentifier: ForecastCell.identifier)
+        register(CharactersCell.self, forCellWithReuseIdentifier: CharactersCell.identifier)
         
        
         
@@ -44,7 +44,7 @@ final class ForecastCollection: UICollectionView {
     }
 }
 
-extension ForecastCollection: UICollectionViewDelegateFlowLayout {
+extension CharactersCollection: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return .init(width:  364, height: 70)
     }
@@ -54,7 +54,7 @@ extension ForecastCollection: UICollectionViewDelegateFlowLayout {
     }
 }
 
-extension ForecastCollection: UICollectionViewDataSource {
+extension CharactersCollection: UICollectionViewDataSource {
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 1
     }
@@ -65,7 +65,7 @@ extension ForecastCollection: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ForecastCell.identifier, for: indexPath) as? ForecastCell else {
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CharactersCell.identifier, for: indexPath) as? CharactersCell else {
             return UICollectionViewCell()
             
         }

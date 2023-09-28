@@ -1,17 +1,14 @@
-
-
 import UIKit
 
-class ThirdViewController: UIViewController {
+final class FavoritesViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+      
         view.backgroundColor = .blue
         navigationController?.navigationBar.prefersLargeTitles = true
-        title = "артем лох"
+        title = "Избранное"
        
     }
-    
-
-   
+       
 }

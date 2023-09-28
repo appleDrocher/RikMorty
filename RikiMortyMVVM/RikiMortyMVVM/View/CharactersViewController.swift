@@ -1,12 +1,11 @@
 import Constraints
 import UIKit
 
-final class FirstViewController: UIViewController {
-    
-    private lazy var forecastCollection = ForecastCollection()
+final class CharactersViewController: UIViewController {
+
+    private lazy var charactersCollection = CharactersCollection()
     private var content = UIView()
- 
-    
+     
         override func viewDidLoad() {
         super.viewDidLoad()
         setup()
@@ -18,35 +17,31 @@ final class FirstViewController: UIViewController {
     
     private func setup() {
         
-        forecastCollection.showsVerticalScrollIndicator = false
+        charactersCollection.showsVerticalScrollIndicator = false
         view.addSubview(content)
-        content.addSubview(forecastCollection)
-        forecastCollection.controller = self
+        content.addSubview(charactersCollection)
+        charactersCollection.controller = self
        
         Task {
-            
             do {
                 let characters = try await Networker.shared.get(
                     object: Characters.self,
                     for: .characters
                 )
-
-                forecastCollection.set(hero: characters)
-                
-            } catch {
+                charactersCollection.set(hero: characters)
+           } catch {
                 guard error is Failure else { return }
                 
             }
         }
-    
-    }
+}
     
     private func layout() {
         content.layout
             .box(in: view)
             .activate()
         
-        forecastCollection.layout
+        charactersCollection.layout
             .leading(16)
             .trailing(16)
             .top(0)
