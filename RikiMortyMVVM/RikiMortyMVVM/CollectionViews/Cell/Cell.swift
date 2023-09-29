@@ -2,7 +2,7 @@ import UIKit
 import Constraints
 import Foundation
 
-final class CharactersCell: UICollectionViewCell, UITextFieldDelegate {
+final class CharactersCell: UICollectionViewCell {
    
     private lazy var characterImage: UIImageView = {
         let image = UIImageView()
@@ -18,13 +18,13 @@ final class CharactersCell: UICollectionViewCell, UITextFieldDelegate {
     }()
    
     private lazy var frameImage: UIImageView = {
-        let image = UIImageView (image: UIImage(named: "Frame"))
+        let image = UIImageView (image: .circle)
         image.contentMode = .scaleAspectFit
         return image
     }()
     
     private lazy var elipseImage: UIImageView = {
-        let image = UIImageView (image: UIImage(named: "Ellipse 1"))
+        let image = UIImageView (image: .chevron)
         image.contentMode = .scaleAspectFit
         return image
     }()
@@ -49,8 +49,8 @@ final class CharactersCell: UICollectionViewCell, UITextFieldDelegate {
     }()
   
     public func configure(with hero: Characters.Result ) {
-        characterName.text = "\(hero.name)"
-        alive.text = "\(hero.status.rawValue) - \(hero.species.rawValue)"
+        characterName.attributedText = NSMutableAttributedString(string: "\(hero.name)", attributes: [NSAttributedString.Key.kern: -0.3])
+        alive.attributedText = NSMutableAttributedString(string: "\(hero.status.rawValue) - \(hero.species.rawValue)", attributes: [NSAttributedString.Key.kern: -0.3])
         Task {
             guard let url = hero.normalUrl else { return }
             await characterImage.load(for: url)
@@ -68,7 +68,7 @@ final class CharactersCell: UICollectionViewCell, UITextFieldDelegate {
     }
     
     private func setup() {
-        contentView.layer.backgroundColor = UIColor(red: 0.967, green: 0.967, blue: 0.967, alpha: 1).cgColor
+        contentView.layer.backgroundColor = UIColor.backgroundCell.cgColor
         contentView.layer.cornerRadius = 14
         contentView.clipsToBounds = true
         contentView.addSubview(characterImage)
@@ -87,6 +87,7 @@ final class CharactersCell: UICollectionViewCell, UITextFieldDelegate {
             .size(w: 140, h: 19)
             .leading(82)
             .top.equal(characterImage.top, 17)
+            .width(300)
             .activate()
         
         frameImage.layout

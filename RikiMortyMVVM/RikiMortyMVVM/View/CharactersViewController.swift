@@ -2,26 +2,28 @@ import Constraints
 import UIKit
 
 final class CharactersViewController: UIViewController {
-
+    
     private lazy var charactersCollection = CharactersCollection()
     private var content = UIView()
-     
-        override func viewDidLoad() {
+    
+    override func viewDidLoad() {
         super.viewDidLoad()
         setup()
         layout()
         navigationController?.navigationBar.prefersLargeTitles = true
         title = "Персонажи"
-        
+        guard let items = tabBarController?.tabBar.items else { return }
+        for tab in items where tab.title == title {
+            tab.title = "Главная"
+        }
     }
     
     private func setup() {
-        
         charactersCollection.showsVerticalScrollIndicator = false
         view.addSubview(content)
         content.addSubview(charactersCollection)
         charactersCollection.controller = self
-       
+        
         Task {
             do {
                 let characters = try await Networker.shared.get(
@@ -29,12 +31,12 @@ final class CharactersViewController: UIViewController {
                     for: .characters
                 )
                 charactersCollection.set(hero: characters)
-           } catch {
+            } catch {
                 guard error is Failure else { return }
                 
             }
         }
-}
+    }
     
     private func layout() {
         content.layout
@@ -51,5 +53,5 @@ final class CharactersViewController: UIViewController {
         
         
     }
-  
+    
 }

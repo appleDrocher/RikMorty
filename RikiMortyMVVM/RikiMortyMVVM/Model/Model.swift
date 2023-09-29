@@ -10,10 +10,11 @@ struct Characters: Decodable {
 // MARK: - Info
 
 extension Characters {
-  
+    
     
     struct Info: Decodable {
-        let count, pages: Int
+        let count: Int
+        let pages: Int
         let next: String
         
     }
@@ -30,16 +31,16 @@ extension Characters {
         let location: Location
         let image: String
         let episode: [String]
-        let url: String
         let created: String
+        
+        private let url: String
         
         var normalUrl: URL? {
             let normal =  image
             return URL(string: normal)
         }
     }
-        
-    }
+    
     
     enum Gender: String, Decodable {
         case female = "Female"
@@ -64,5 +65,8 @@ extension Characters {
         let name: String
         let url: String
     }
-
+    
+}
+    
+    
 
