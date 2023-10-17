@@ -23,6 +23,8 @@
 		7AECC43C2AC6FD880041FB2D /* UIImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AECC43B2AC6FD880041FB2D /* UIImage.swift */; };
 		7AECC43E2AC7033D0041FB2D /* Size.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AECC43D2AC7033D0041FB2D /* Size.swift */; };
 		7AECC4402AC74B070041FB2D /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AECC43F2AC74B070041FB2D /* UIColor.swift */; };
+		7AECC45E2ADEA0140041FB2D /* FavoritesCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AECC45D2ADEA0140041FB2D /* FavoritesCollection.swift */; };
+		7AECC4602ADEA0510041FB2D /* FavoritesCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AECC45F2ADEA0510041FB2D /* FavoritesCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -43,6 +45,8 @@
 		7AECC43B2AC6FD880041FB2D /* UIImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImage.swift; sourceTree = "<group>"; };
 		7AECC43D2AC7033D0041FB2D /* Size.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Size.swift; sourceTree = "<group>"; };
 		7AECC43F2AC74B070041FB2D /* UIColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColor.swift; sourceTree = "<group>"; };
+		7AECC45D2ADEA0140041FB2D /* FavoritesCollection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesCollection.swift; sourceTree = "<group>"; };
+		7AECC45F2ADEA0510041FB2D /* FavoritesCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -76,8 +80,8 @@
 		7A78ABC02AAE191B00131A82 /* RikiMortyMVVM */ = {
 			isa = PBXGroup;
 			children = (
+				7AECC4412AC9D7880041FB2D /* Service */,
 				7AECC43A2AC6FD520041FB2D /* Extension */,
-				7A78ABEB2AB6067300131A82 /* Network */,
 				7A78ABEA2AB5D89500131A82 /* Model */,
 				7A78ABE42AAF617700131A82 /* CollectionViews */,
 				7A78ABD52AAE22A600131A82 /* View */,
@@ -113,8 +117,8 @@
 		7A78ABE42AAF617700131A82 /* CollectionViews */ = {
 			isa = PBXGroup;
 			children = (
-				7A78ABF32AC2226E00131A82 /* Cell */,
-				7A78ABE52AAF618E00131A82 /* Collection */,
+				7AECC44F2ADE6EC10041FB2D /* FavotiresCharacters */,
+				7AECC4432ACA02AF0041FB2D /* CharactersInfo */,
 			);
 			path = CollectionViews;
 			sourceTree = "<group>";
@@ -158,6 +162,32 @@
 				7AECC43F2AC74B070041FB2D /* UIColor.swift */,
 			);
 			path = Extension;
+			sourceTree = "<group>";
+		};
+		7AECC4412AC9D7880041FB2D /* Service */ = {
+			isa = PBXGroup;
+			children = (
+				7A78ABEB2AB6067300131A82 /* Network */,
+			);
+			path = Service;
+			sourceTree = "<group>";
+		};
+		7AECC4432ACA02AF0041FB2D /* CharactersInfo */ = {
+			isa = PBXGroup;
+			children = (
+				7A78ABE52AAF618E00131A82 /* Collection */,
+				7A78ABF32AC2226E00131A82 /* Cell */,
+			);
+			path = CharactersInfo;
+			sourceTree = "<group>";
+		};
+		7AECC44F2ADE6EC10041FB2D /* FavotiresCharacters */ = {
+			isa = PBXGroup;
+			children = (
+				7AECC45D2ADEA0140041FB2D /* FavoritesCollection.swift */,
+				7AECC45F2ADEA0510041FB2D /* FavoritesCell.swift */,
+			);
+			path = FavotiresCharacters;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -244,9 +274,11 @@
 				7A78ABF12AC1DADB00131A82 /* FavoritesViewController.swift in Sources */,
 				7A78ABE72AAFAE7E00131A82 /* Collection.swift in Sources */,
 				7A78ABDF2AAE413600131A82 /* CharactersViewController.swift in Sources */,
+				7AECC4602ADEA0510041FB2D /* FavoritesCell.swift in Sources */,
 				7A78ABED2AB606A900131A82 /* Networker.swift in Sources */,
 				7AECC4402AC74B070041FB2D /* UIColor.swift in Sources */,
 				7A78ABC22AAE191B00131A82 /* AppDelegate.swift in Sources */,
+				7AECC45E2ADEA0140041FB2D /* FavoritesCollection.swift in Sources */,
 				7A78ABC42AAE191B00131A82 /* SceneDelegate.swift in Sources */,
 				7A78ABE92AB1C76D00131A82 /* Cell.swift in Sources */,
 			);
@@ -316,7 +348,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.3;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -370,7 +402,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.3;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;

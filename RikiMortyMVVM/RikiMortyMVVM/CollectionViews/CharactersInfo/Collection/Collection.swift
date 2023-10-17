@@ -2,9 +2,15 @@ import UIKit
 
 final class CharactersCollection: UICollectionView {
     
-    public weak var controller : UIViewController?
+    public weak var controller : CharactersViewController?
     
-    private var hero: Characters?
+    public var page = 0
+    
+    public var hero: [Characters.Result] = [] {
+        didSet{
+            reloadData()
+        }
+    }
     
     
     public init() {
@@ -18,17 +24,15 @@ final class CharactersCollection: UICollectionView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let newViewController = StoryViewController()
-        controller?.navigationController?.pushViewController(newViewController, animated: true)
+        let selectedCharacter = hero[indexPath.item]
+        let storyVC = StoryViewController()
+        storyVC.character = selectedCharacter
+        controller?.navigationController?.pushViewController(storyVC, animated: true)
         
     }
     
-    public func set(hero: Characters?) {
-        self.hero = hero
-        reloadData()
-    }
+    
     
     private func setup() {
         dataSource = self
@@ -36,6 +40,7 @@ final class CharactersCollection: UICollectionView {
         register(CharactersCell.self, forCellWithReuseIdentifier: CharactersCell.identifier)
         contentInset = .init(top: 0, left: 0, bottom: 0, right: 0)
         decelerationRate = .fast
+        
     }
 }
 
@@ -55,8 +60,17 @@ extension CharactersCollection: UICollectionViewDataSource {
     }
     
     
+    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        if  indexPath.item == hero.count - 1  {
+            page += 1
+            controller?.load(for: page)
+            
+        }
+        
+    }
+    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return hero?.results.count ?? 8
+        return hero.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -64,12 +78,11 @@ extension CharactersCollection: UICollectionViewDataSource {
             return UICollectionViewCell()
             
         }
-        if let characters = hero?.results[indexPath.item] { cell.configure(with: characters) }
+        let characters = hero[indexPath.item]
+        
+        cell.configure(with: characters)
         
         return cell
     }
-    
-    
-    
     
 }

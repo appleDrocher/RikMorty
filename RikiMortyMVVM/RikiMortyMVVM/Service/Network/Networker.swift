@@ -1,21 +1,23 @@
 import UIKit
 
 enum Request {
-    case characters
-   
+    case characters(name: String?, page: Int = 0)
+    
     private var host: String {
         switch self {
-        case .characters : return "https://rickandmortyapi.com/api/character"
-      
+        case .characters : return "https://rickandmortyapi.com/api/character/"
+            
         }
     }
     
     private var parameters: [URLQueryItem] {
         switch self {
-        case .characters:
-            return [
-                .init(name: "next", value: "https://rickandmortyapi.com/api/character/?page=2")
-            ]
+        case .characters(let name, let page):
+            var temp: [URLQueryItem] = [.init(name: "page", value: page.description)]
+            if let name {
+                temp.append(.init(name: "name", value: name))
+            }
+            return temp
             
         }
     }

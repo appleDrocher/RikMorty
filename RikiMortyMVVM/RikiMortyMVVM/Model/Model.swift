@@ -1,8 +1,7 @@
-
 import Foundation
 
 // MARK: - Welcome
-struct Characters: Decodable {
+public struct Characters: Decodable {
     let info: Info
     let results: [Result]
 }
@@ -10,7 +9,6 @@ struct Characters: Decodable {
 // MARK: - Info
 
 extension Characters {
-    
     
     struct Info: Decodable {
         let count: Int
@@ -24,7 +22,7 @@ extension Characters {
         let id: Int
         let name: String
         let status: Status
-        let species: Species
+        let species: String
         let type: String
         let gender: Gender
         let origin: Location
@@ -36,11 +34,43 @@ extension Characters {
         private let url: String
         
         var normalUrl: URL? {
-            let normal =  image
-            return URL(string: normal)
+            return URL(string: image)
+        }
+        
+        var speciesRus: String {
+            switch species {
+            case "Alien": return "Инопланетянин"
+            case "Human": return "Человек"
+            case "Animal": return "Животное"
+            case "Humanoid": return "Гуманоид"
+            default: return species
+            }
         }
     }
     
+    // MARK: - Location
+    
+    
+    enum Status: String, Decodable {
+        case alive = "Alive"
+        case dead = "Dead"
+        case unknown = "unknown"
+        
+        var russifikationStatus: String {
+            switch self  {
+            case .alive: return "Живой"
+            case .dead:  return "Мертвый"
+            case .unknown: return "Неизвестно"
+            }
+            
+        }
+        
+    }
+    
+    struct Location: Decodable {
+        let name: String
+        let url: String
+    }
     
     enum Gender: String, Decodable {
         case female = "Female"
@@ -48,25 +78,7 @@ extension Characters {
         case unknown = "unknown"
     }
     
-    // MARK: - Location
-    
-    enum Species: String, Decodable {
-        case alien = "Alien"
-        case human = "Human"
-    }
-    
-    enum Status: String, Decodable {
-        case alive = "Alive"
-        case dead = "Dead"
-        case unknown = "unknown"
-    }
-  
-    struct Location: Decodable {
-        let name: String
-        let url: String
-    }
     
 }
-    
-    
+
 

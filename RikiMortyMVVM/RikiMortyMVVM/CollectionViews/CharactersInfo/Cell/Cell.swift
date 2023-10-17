@@ -4,11 +4,33 @@ import Foundation
 
 final class CharactersCell: UICollectionViewCell {
    
+    private var content = UIView()
+    
     private lazy var characterImage: UIImageView = {
         let image = UIImageView()
         image.clipsToBounds = true
         return image
     }()
+    
+    
+    private lazy var favorites: UIButton = {
+        let button = UIButton()
+        button.setImage(UIImage(systemName: "heart"), for: .normal)
+        button.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
+        button.tintColor = .gray
+        return button
+    }()
+
+    private var isButtonTapped = false
+
+    @objc private func buttonTapped() {
+        let image = isButtonTapped ? UIImage(systemName: "heart") : UIImage(systemName: "heart.fill")
+        favorites.setImage(image, for: .normal)
+        favorites.tintColor = isButtonTapped ? .gray : .red
+        isButtonTapped.toggle()
+        
+    }
+    
     
     private lazy var characterName: UILabel = {
         let label = UILabel()
@@ -50,17 +72,19 @@ final class CharactersCell: UICollectionViewCell {
   
     public func configure(with hero: Characters.Result ) {
         characterName.attributedText = NSMutableAttributedString(string: "\(hero.name)", attributes: [NSAttributedString.Key.kern: -0.3])
-        alive.attributedText = NSMutableAttributedString(string: "\(hero.status.rawValue) - \(hero.species.rawValue)", attributes: [NSAttributedString.Key.kern: -0.3])
+        alive.attributedText = NSMutableAttributedString(string: "\(hero.status.russifikationStatus) - \(hero.speciesRus)", attributes: [NSAttributedString.Key.kern: -0.3])
         Task {
             guard let url = hero.normalUrl else { return }
             await characterImage.load(for: url)
         }
         
+
     }
-    
+   
     override init(frame: CGRect) {
         super.init(frame: frame)
         setup()
+
     }
     
     required init?(coder: NSCoder) {
@@ -71,12 +95,21 @@ final class CharactersCell: UICollectionViewCell {
         contentView.layer.backgroundColor = UIColor.backgroundCell.cgColor
         contentView.layer.cornerRadius = 14
         contentView.clipsToBounds = true
-        contentView.addSubview(characterImage)
-        contentView.addSubview(characterName)
-        contentView.addSubview(alive)
-        contentView.addSubview(frameImage)
-        contentView.addSubview(elipseImage)
-    
+        
+        contentView.addSubview(content)
+        
+        content.addSubview(characterImage)
+        content.addSubview(characterName)
+        content.addSubview(alive)
+        content.addSubview(frameImage)
+        content.addSubview(elipseImage)
+        content.addSubview(favorites)
+        
+        content.layout
+            .box(in: contentView)
+            .activate()
+        
+        
         characterImage.layout
             .size(70)
             .leading.equal(characterImage.leading)
@@ -86,6 +119,7 @@ final class CharactersCell: UICollectionViewCell {
         characterName.layout
             .size(w: 140, h: 19)
             .leading(82)
+            .trailing.equal(favorites.leading, 15)
             .top.equal(characterImage.top, 17)
             .width(300)
             .activate()
@@ -96,7 +130,7 @@ final class CharactersCell: UICollectionViewCell {
             .top(30)
             .leading(345)
             .activate()
-       
+        
         elipseImage.layout
             .size(w: 6, h: 6)
             .top(45)
@@ -106,9 +140,19 @@ final class CharactersCell: UICollectionViewCell {
         alive.layout
             .size(w: 127, h: 17)
             .top(38)
+            .width(300)
+            .trailing.equal(favorites.leading, 15)
             .leading.equal(elipseImage.trailing,5)
             .activate()
-
+        
+        
+        favorites.layout
+            .size(w: 15, h: 15)
+            .trailing(30)
+            .top(30)
+            .leading(310)
+            .activate()
+        
     }
 }
   
