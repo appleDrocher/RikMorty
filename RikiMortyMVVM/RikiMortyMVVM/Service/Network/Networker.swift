@@ -18,9 +18,9 @@ enum Request {
                 temp.append(.init(name: "name", value: name))
             }
             return temp
-            
         }
     }
+   
     private var url: URL? {
         return components?.url
     }

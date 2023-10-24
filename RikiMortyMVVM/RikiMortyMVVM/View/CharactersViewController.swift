@@ -2,11 +2,25 @@ import Constraints
 import UIKit
 
 final class CharactersViewController: UIViewController, UISearchBarDelegate {
-  
+    
     private lazy var charactersCollection = CharactersCollection()
-  
+    
     private var content = UIView()
-
+    
+    public lazy var mainSpinner: UIActivityIndicatorView = {
+        let spiner = UIActivityIndicatorView(style: UIActivityIndicatorView.Style.large)
+        spiner.startAnimating()
+        spiner.style = .large
+        return spiner
+    }()
+    
+    public lazy var loadNextPageSpinner: UIActivityIndicatorView = {
+        let spiner = UIActivityIndicatorView(style: UIActivityIndicatorView.Style.large)
+        spiner.style = .medium
+        return spiner
+    }()
+    
+    
     private lazy var searchCharactersController: UISearchController = {
         let search = UISearchController()
         search.searchBar.placeholder = "Поиск персонажей"
@@ -16,6 +30,16 @@ final class CharactersViewController: UIViewController, UISearchBarDelegate {
     }()
     
     private var searchText: String? = nil
+    
+    
+    @objc private func sortedFavoritesTapped() {
+        
+        
+        let favoritesVC = FavoritesViewController()
+        navigationController?.pushViewController(favoritesVC, animated: true)
+        
+    }
+    
     
     
     override func viewDidLoad() {
@@ -43,27 +67,42 @@ final class CharactersViewController: UIViewController, UISearchBarDelegate {
                     for: .characters(name: name)
                 )
                 charactersCollection.hero = characters.results
-        
+                
             } catch {
                 guard error is Failure else { return }
                 
-                }
+            }
         }
     }
-  
-    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
     
-    }
+    //    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+    //
+    //    }
     
     private func setup() {
         charactersCollection.showsVerticalScrollIndicator = false
-        charactersCollection.auto = true
+        charactersCollection.charactersController = self
         navigationItem.searchController = searchCharactersController
-        charactersCollection.controller = self
+        
+        
         view.addSubview(content)
         content.addSubview(charactersCollection)
-  
+        content.addSubview(mainSpinner)
+        content.addSubview(loadNextPageSpinner)
+        
         load(for: 0)
+        
+        let sortedFavoritesButton = UIBarButtonItem(
+            title: "Sorted Favorites",
+            style: .done,
+            target: self,
+            action: #selector(sortedFavoritesTapped)
+        )
+        
+        
+        navigationItem.rightBarButtonItem = sortedFavoritesButton
+        
+        
     }
     
     private func layout() {
@@ -79,10 +118,26 @@ final class CharactersViewController: UIViewController, UISearchBarDelegate {
             .bottom(0)
             .activate()
         
+        
+        mainSpinner.layout
+            .centerX.equal(content.centerY)
+            .horizontally()
+            .bottom.equal(charactersCollection.bottom, 300)
+            .activate()
+        
+        
+        
+        loadNextPageSpinner.layout
+            .centerX.equal(content.centerY)
+            .horizontally()
+            .bottom.equal(charactersCollection.bottom, 10)
+            .activate()
     }
-
     
-   public func load(for page: Int) {
+    
+    
+    
+    public func load(for page: Int) {
         Task {
             do {
                 let characters = try await Networker.shared.get(
@@ -90,11 +145,19 @@ final class CharactersViewController: UIViewController, UISearchBarDelegate {
                     for: .characters(name: searchText, page: page)
                 )
                 charactersCollection.hero.append(contentsOf: characters.results)
+              self.mainSpinner.isHidden = true
+              self.loadNextPageSpinner.isHidden = true
             } catch {
-                guard error is Failure else { return }
-                
+                sleep(5)
+                guard let failure = error as? Failure else { return }
+                showAlert(message: failure.description)
             }
         }
     }
     
+    private func showAlert(message: String) {
+        let alert = UIAlertController(title: "Ошибка", message: message, preferredStyle: .alert)
+        alert.addAction(.init(title: "ОК", style: .cancel))
+        present(alert, animated: true)
+    }
 }

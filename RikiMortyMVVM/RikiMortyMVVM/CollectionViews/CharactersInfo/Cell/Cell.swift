@@ -1,10 +1,12 @@
+
 import UIKit
 import Constraints
 import Foundation
 
 final class CharactersCell: UICollectionViewCell {
-   
+    
     private var content = UIView()
+    
     
     private lazy var characterImage: UIImageView = {
         let image = UIImageView()
@@ -20,17 +22,9 @@ final class CharactersCell: UICollectionViewCell {
         button.tintColor = .gray
         return button
     }()
-
-    private var isButtonTapped = false
-
-    @objc private func buttonTapped() {
-        let image = isButtonTapped ? UIImage(systemName: "heart") : UIImage(systemName: "heart.fill")
-        favorites.setImage(image, for: .normal)
-        favorites.tintColor = isButtonTapped ? .gray : .red
-        isButtonTapped.toggle()
-        
-    }
+       
     
+    private var id: Int?
     
     private lazy var characterName: UILabel = {
         let label = UILabel()
@@ -38,7 +32,7 @@ final class CharactersCell: UICollectionViewCell {
         label.textColor = UIColor(red: 0, green: 0, blue: 0, alpha: 1)
         return label
     }()
-   
+    
     private lazy var frameImage: UIImageView = {
         let image = UIImageView (image: .circle)
         image.contentMode = .scaleAspectFit
@@ -60,7 +54,7 @@ final class CharactersCell: UICollectionViewCell {
         label.attributedText = NSMutableAttributedString(string: "", attributes: [NSAttributedString.Key.kern: -0.3])
         return label
     }()
-  
+    
     private lazy var status: UILabel = {
         let label = UILabel()
         label.font = .systemFont(ofSize: 14, weight: .light)
@@ -69,8 +63,8 @@ final class CharactersCell: UICollectionViewCell {
         label.attributedText = NSMutableAttributedString(string: "", attributes: [NSAttributedString.Key.kern: -0.3])
         return label
     }()
-  
-    public func configure(with hero: Characters.Result ) {
+    
+    public func configure(with hero: Characters.Result) {
         characterName.attributedText = NSMutableAttributedString(string: "\(hero.name)", attributes: [NSAttributedString.Key.kern: -0.3])
         alive.attributedText = NSMutableAttributedString(string: "\(hero.status.russifikationStatus) - \(hero.speciesRus)", attributes: [NSAttributedString.Key.kern: -0.3])
         Task {
@@ -78,14 +72,27 @@ final class CharactersCell: UICollectionViewCell {
             await characterImage.load(for: url)
         }
         
-
+        let isFavorit = Storage.getFavorites(id: hero.id)
+        
+        if isFavorit {
+            let image = UIImage(systemName: "heart.fill")
+            favorites.setImage(image, for: .normal)
+            favorites.tintColor = .red
+        } else {
+            let image = UIImage(systemName: "heart")
+            favorites.setImage(image, for: .normal)
+            favorites.tintColor = .gray
+        }
+        id = hero.id
     }
-   
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         setup()
-
+        
+        
     }
+    
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -105,11 +112,10 @@ final class CharactersCell: UICollectionViewCell {
         content.addSubview(elipseImage)
         content.addSubview(favorites)
         
+        
         content.layout
             .box(in: contentView)
             .activate()
-        
-        
         characterImage.layout
             .size(70)
             .leading.equal(characterImage.leading)
@@ -154,12 +160,29 @@ final class CharactersCell: UICollectionViewCell {
             .activate()
         
     }
-}
-  
-
-extension CharactersCell {
-        public static let identifier: String = "charactersCell"
+    
+    @objc private func buttonTapped() {
+        var isFavorit = Storage.getFavorites(id: id ?? 0)
+        isFavorit.toggle()
+        Storage.setFavorites(id: id ?? 0, value: isFavorit)
+        if !isFavorit {
+            let image = UIImage(systemName: "heart")
+            favorites.setImage(image, for: .normal)
+            favorites.tintColor = .gray
+            print("ne tap /xD")
+        } else {
+            let image = UIImage(systemName: "heart.fill")
+            favorites.setImage(image, for: .normal)
+            favorites.tintColor = .red
+            print("tap")
+        }
+        
     }
     
+    
+}
 
 
+extension CharactersCell {
+    public static let identifier: String = "charactersCell"
+} // сделай что бы состояние кнопки сохранялись по indexPath

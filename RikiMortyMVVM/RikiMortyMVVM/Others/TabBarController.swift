@@ -11,7 +11,6 @@ final class Fabric {
         let storyVc = StoryViewController()
         let favoriteVc = FavoritesViewController()
         
-      
         let home = UINavigationController(rootViewController: characterVc)
         let storyes = UINavigationController(rootViewController: storyVc)
         let favorites = UINavigationController(rootViewController: favoriteVc)
