@@ -2,7 +2,7 @@ import UIKit
 import Constraints
 import Foundation
 
-final class FavoritesCell: UICollectionViewCell {
+final class ViewedCharactersCell: UICollectionViewCell {
    
     private var content = UIView()
     
@@ -10,6 +10,13 @@ final class FavoritesCell: UICollectionViewCell {
         let image = UIImageView()
         image.clipsToBounds = true
         return image
+    }()
+    
+    private lazy var history: UIImageView = {
+        let imageView = UIImageView(image: .history)
+            
+        imageView.tintColor = .darkGray
+        return imageView
     }()
     
     
@@ -68,7 +75,7 @@ final class FavoritesCell: UICollectionViewCell {
         content.addSubview(characterImage)
         content.addSubview(characterName)
         content.addSubview(alive)
-       
+        content.addSubview(history)
         
         content.layout
             .box(in: contentView)
@@ -81,13 +88,17 @@ final class FavoritesCell: UICollectionViewCell {
             .top()
             .activate()
          
+        history.layout
+            .size(w: 25, h: 25)
+            .trailing(25)
+            .top(22)
+            .activate()
         
     }
 }
 
-extension FavoritesCell {
-        public static let identifierr: String = "FavoritesCell"
+extension ViewedCharactersCell {
+        public static let identifierrr: String = "ViewedCharactersCell"
     }
     
-
 

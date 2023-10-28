@@ -1,8 +1,8 @@
 import UIKit
 
+
 final class CharactersCollection: UICollectionView {
-    
-    
+        
     public weak var charactersController : CharactersViewController?
     
     public weak var collectionView: CharactersCollection?
@@ -15,15 +15,12 @@ final class CharactersCollection: UICollectionView {
         }
     }
     
-   
-   
-    
     var isLoadingData = false
     
-    
     public init() {
-        let layout = UICollectionViewFlowLayout()
-        super.init(frame: .zero, collectionViewLayout: layout)
+        let flow = SnappingCollectionViewLayout()
+        flow.scrollDirection = .vertical
+        super.init(frame: .zero, collectionViewLayout: flow)
         setup()
         
     }
@@ -32,29 +29,21 @@ final class CharactersCollection: UICollectionView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    
-    
-    
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let selectedCharacter = hero[indexPath.item]
-        let storyVC = StoryViewController()
+        let storyVC = HeroInfoViewController()
         storyVC.character = selectedCharacter
-        charactersController?.navigationController?.pushViewController(storyVC, animated: true)
+        charactersController?.navigationController?.present(storyVC, animated: true)
         
     }
-    
-    
     
     private func setup() {
         dataSource = self
         delegate = self
         register(CharactersCell.self, forCellWithReuseIdentifier: CharactersCell.identifier)
         decelerationRate = .fast
-        
-    //  contentInset = .init(top: 0, left: 0, bottom: 0, right: 0)
-    //  charactersController?.mainSpinner.layer.zPosition = -1
-    //  charactersController?.mainSpinner.frame = self.frame
-    
+        register(UICollectionReusableView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter, withReuseIdentifier: "FooterView")
+
     }
 }
 
@@ -77,22 +66,44 @@ extension CharactersCollection: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForFooterInSection section: Int) -> CGSize {
-        return .init(width: collectionView.frame.width, height: 70)
-        
+        return .init(width: collectionView.frame.width, height: 60)
+   
     }
     
+    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+        if kind == UICollectionView.elementKindSectionFooter {
+            let footerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "FooterView", for: indexPath)
+            
+            for subview in footerView.subviews {
+                subview.removeFromSuperview()
+            }
+            
+            if let loadNextPageSpinner = charactersController?.contentIndicator {
+                footerView.addSubview(loadNextPageSpinner)
+            }
+            
+            return footerView
+        }
+        
+        return UICollectionReusableView()
+    }
+
+
     
     
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+      
         if indexPath.item == hero.count - 1 {
             page += 1
             charactersController?.load(for: page)
+            charactersController?.loadNextPageSpinner.startAnimating()
+            
+
         }
         
         if indexPath.item == hero.count - 1 && !isLoadingData {
             isLoadingData = false
-            
-           charactersController?.loadNextPageSpinner.isHidden = false
+            charactersController?.loadNextPageSpinner.isHidden = false
         }
     }
     

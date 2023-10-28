@@ -1,6 +1,6 @@
 import UIKit
 
-final class FavoritesCollection: UICollectionView {
+final class ViewedCharactersCollection: UICollectionView {
     
     
     public init() {
@@ -24,14 +24,14 @@ final class FavoritesCollection: UICollectionView {
     private func setup() {
         dataSource = self
         delegate = self
-        register(FavoritesCell.self, forCellWithReuseIdentifier: FavoritesCell.identifierr)
+        register(ViewedCharactersCell.self, forCellWithReuseIdentifier: ViewedCharactersCell.identifierrr)
         decelerationRate = .fast
 
     }
 }
 
 
-extension FavoritesCollection: UICollectionViewDelegateFlowLayout {
+extension ViewedCharactersCollection: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return flowLayout
     }
@@ -42,13 +42,13 @@ extension FavoritesCollection: UICollectionViewDelegateFlowLayout {
     
 }
 
-extension FavoritesCollection: UICollectionViewDataSource {
+extension ViewedCharactersCollection: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return 18
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: FavoritesCell.identifierr, for: indexPath) as? FavoritesCell else {
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ViewedCharactersCell.identifierrr, for: indexPath) as? ViewedCharactersCell else {
             return UICollectionViewCell()
             
         }

@@ -1,7 +1,7 @@
 import UIKit
 import Constraints
 
-final class StoryViewController: UIViewController {
+final class HeroInfoViewController: UIViewController {
     
     public  var character: Characters.Result?
     
@@ -15,7 +15,13 @@ final class StoryViewController: UIViewController {
         return imageView
     }()
  
-    
+    private lazy var frameImage: UIImageView = {
+        let image = UIImageView()
+        image.image = UIImage(systemName: "chevron.compact.down")
+        image.tintColor = UIColor.black
+        return image
+    }()
+   
     private lazy var spinner: UIActivityIndicatorView = {
         let spiner = UIActivityIndicatorView(style: UIActivityIndicatorView.Style.large)
         spiner.startAnimating()
@@ -34,13 +40,12 @@ final class StoryViewController: UIViewController {
     }
     
     private func setup() {
-        navigationController?.navigationBar.prefersLargeTitles = true
-        title = "Информация"
         view.backgroundColor = .white
         view.addSubview(content)
         content.addSubview(characterImage)
         content.addSubview(spinner)
-       
+        content.addSubview(frameImage)
+   
     }
     
     private func layout() {
@@ -50,18 +55,24 @@ final class StoryViewController: UIViewController {
             .activate()
         
         characterImage.layout
-            .size(100)
+            .size(170)
             .centerX.equal(content.centerY)
             .horizontally()
             .top(50)
             .activate()
         
         spinner.layout
+            .centerX.equal(characterImage.centerY)
+            .horizontally()
+            .top(130)
+            .activate()
+        
+        frameImage.layout
+            .size(w: 40, h: 28)
             .centerX.equal(content.centerY)
             .horizontally()
-            .top(90)
+            .top(6)
             .activate()
-      
     }
    
     public func getImage() {

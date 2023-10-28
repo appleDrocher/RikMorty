@@ -7,6 +7,8 @@ final class CharactersViewController: UIViewController, UISearchBarDelegate {
     
     private var content = UIView()
     
+    public var contentIndicator = UIView()
+  
     public lazy var mainSpinner: UIActivityIndicatorView = {
         let spiner = UIActivityIndicatorView(style: UIActivityIndicatorView.Style.large)
         spiner.startAnimating()
@@ -15,8 +17,10 @@ final class CharactersViewController: UIViewController, UISearchBarDelegate {
     }()
     
     public lazy var loadNextPageSpinner: UIActivityIndicatorView = {
-        let spiner = UIActivityIndicatorView(style: UIActivityIndicatorView.Style.large)
+        let spiner = UIActivityIndicatorView()
         spiner.style = .medium
+      
+        
         return spiner
     }()
     
@@ -34,18 +38,17 @@ final class CharactersViewController: UIViewController, UISearchBarDelegate {
     
     @objc private func sortedFavoritesTapped() {
         
-        
-        let favoritesVC = FavoritesViewController()
+
+    let favoritesVC = FavoritesViewController()
         navigationController?.pushViewController(favoritesVC, animated: true)
         
     }
-    
-    
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setup()
         layout()
+        indicatorLayout()
         navigationController?.navigationBar.prefersLargeTitles = true
         title = "Персонажи"
         
@@ -75,9 +78,9 @@ final class CharactersViewController: UIViewController, UISearchBarDelegate {
         }
     }
     
-    //    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-    //
-    //    }
+        func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+    
+        }
     
     private func setup() {
         charactersCollection.showsVerticalScrollIndicator = false
@@ -85,10 +88,13 @@ final class CharactersViewController: UIViewController, UISearchBarDelegate {
         navigationItem.searchController = searchCharactersController
         
         
+        content.addSubview(contentIndicator)
+        contentIndicator.addSubview(loadNextPageSpinner)
+       
         view.addSubview(content)
         content.addSubview(charactersCollection)
         content.addSubview(mainSpinner)
-        content.addSubview(loadNextPageSpinner)
+       
         
         load(for: 0)
         
@@ -124,20 +130,24 @@ final class CharactersViewController: UIViewController, UISearchBarDelegate {
             .horizontally()
             .bottom.equal(charactersCollection.bottom, 300)
             .activate()
+
+    }
+    
+    private func indicatorLayout() {
         
-        
-        
+        contentIndicator.layout
+            .box(in: view)
+            .activate()
+
         loadNextPageSpinner.layout
-            .centerX.equal(content.centerY)
-            .horizontally()
-            .bottom.equal(charactersCollection.bottom, 10)
+            .centerX.equal(contentIndicator.centerY)
+            .leading.equal(contentIndicator.trailing, 162)
+            .bottom.equal(contentIndicator.bottom, -50)
             .activate()
     }
     
-    
-    
-    
     public func load(for page: Int) {
+
         Task {
             do {
                 let characters = try await Networker.shared.get(
@@ -148,15 +158,16 @@ final class CharactersViewController: UIViewController, UISearchBarDelegate {
               self.mainSpinner.isHidden = true
               self.loadNextPageSpinner.isHidden = true
             } catch {
-                sleep(5)
+                sleep(3)
                 guard let failure = error as? Failure else { return }
                 showAlert(message: failure.description)
+                self.loadNextPageSpinner.isHidden = true
             }
         }
     }
     
     private func showAlert(message: String) {
-        let alert = UIAlertController(title: "Ошибка", message: message, preferredStyle: .alert)
+        let alert = UIAlertController(title: "Ошибка", message: message, preferredStyle: .actionSheet)
         alert.addAction(.init(title: "ОК", style: .cancel))
         present(alert, animated: true)
     }

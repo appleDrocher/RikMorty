@@ -22,8 +22,8 @@ final class CharactersCell: UICollectionViewCell {
         button.tintColor = .gray
         return button
     }()
-       
     
+
     private var id: Int?
     
     private lazy var characterName: UILabel = {
@@ -83,16 +83,15 @@ final class CharactersCell: UICollectionViewCell {
             favorites.setImage(image, for: .normal)
             favorites.tintColor = .gray
         }
+       
         id = hero.id
     }
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         setup()
-        
-        
-    }
     
+    }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -104,14 +103,13 @@ final class CharactersCell: UICollectionViewCell {
         contentView.clipsToBounds = true
         
         contentView.addSubview(content)
-        
+
         content.addSubview(characterImage)
         content.addSubview(characterName)
         content.addSubview(alive)
         content.addSubview(frameImage)
         content.addSubview(elipseImage)
         content.addSubview(favorites)
-        
         
         content.layout
             .box(in: contentView)
@@ -151,7 +149,6 @@ final class CharactersCell: UICollectionViewCell {
             .leading.equal(elipseImage.trailing,5)
             .activate()
         
-        
         favorites.layout
             .size(w: 15, h: 15)
             .trailing(30)
@@ -175,14 +172,13 @@ final class CharactersCell: UICollectionViewCell {
             favorites.setImage(image, for: .normal)
             favorites.tintColor = .red
             print("tap")
+            
         }
         
     }
     
-    
 }
-
 
 extension CharactersCell {
     public static let identifier: String = "charactersCell"
-} // сделай что бы состояние кнопки сохранялись по indexPath
+}
